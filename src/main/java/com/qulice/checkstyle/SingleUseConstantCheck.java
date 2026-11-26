@@ -31,7 +31,10 @@ import java.util.regex.Pattern;
  * {@link java.util.regex.Pattern}, stays where it is, since inlining it
  * would move a computation into a method body and could turn a
  * once-per-class cost into a per-call one. The same goes for an array,
- * which is a mutable object no matter how final its field is.</p>
+ * which is a mutable object no matter how final its field is. A
+ * reference to another field stays as well, since the referenced field
+ * may be mutable and inlining it would read it at a different
+ * time.</p>
  *
  * <p>A constant that a Javadoc comment refers to, the way {@code {@value
  * #NAME}} and {@code {@link #NAME}} do, is left alone as well, since
@@ -63,8 +66,6 @@ public final class SingleUseConstantCheck extends AbstractCheck {
         TokenTypes.LITERAL_TRUE,
         TokenTypes.LITERAL_FALSE,
         TokenTypes.LITERAL_NULL,
-        TokenTypes.IDENT,
-        TokenTypes.DOT,
         TokenTypes.LPAREN,
         TokenTypes.RPAREN,
         TokenTypes.UNARY_MINUS,
